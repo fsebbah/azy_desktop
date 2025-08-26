@@ -11,19 +11,53 @@ void main() {
 
     // Verify that login screen elements are present
     expect(find.text('Chat Studio'), findsOneWidget);
-    expect(find.text('Your intelligent conversation assistant'), findsOneWidget);
+    // The subtitle is in French by default
+    expect(find.text('Votre assistant de conversation intelligent'), findsOneWidget);
     
     // Verify form fields are present
     expect(find.byType(TextFormField), findsNWidgets(2)); // Email and password fields
     
     // Scroll to make sure buttons are visible
-    await tester.ensureVisible(find.text('Sign In'));
+    await tester.ensureVisible(find.text('Se connecter'));
     await tester.pump();
     
-    // Verify buttons are present
+    // Verify buttons are present (in French by default)
+    expect(find.text('Se connecter'), findsOneWidget);
+    expect(find.text('Se connecter avec Google'), findsOneWidget);
+    expect(find.text('Se connecter avec Microsoft'), findsOneWidget);
+    expect(find.text('Créer une organisation'), findsOneWidget);
+    
+    // Verify language selector is present
+    expect(find.byType(DropdownButton<String>), findsOneWidget);
+    
+    // Verify remember me checkbox
+    expect(find.byType(Checkbox), findsOneWidget);
+  });
+
+  testWidgets('Language selector works', (WidgetTester tester) async {
+    await tester.pumpWidget(const MaterialApp(
+      home: Scaffold(
+        body: LoginScreen(),
+      ),
+    ));
+    
+    // Initially in French
+    expect(find.text('Votre assistant de conversation intelligent'), findsOneWidget);
+    expect(find.text('Se connecter'), findsOneWidget);
+    
+    // Find and tap the language dropdown
+    await tester.tap(find.byType(DropdownButton<String>));
+    await tester.pumpAndSettle();
+    
+    // Select English
+    await tester.tap(find.text('English').last);
+    await tester.pumpAndSettle();
+    
+    // Verify text changed to English
+    expect(find.text('Your intelligent conversation assistant'), findsOneWidget);
     expect(find.text('Sign In'), findsOneWidget);
     expect(find.text('Sign in with Google'), findsOneWidget);
-    expect(find.text('Sign Up'), findsOneWidget);
+    expect(find.text('Create an organization'), findsOneWidget);
   });
 
   testWidgets('Login form validation works', (WidgetTester tester) async {
@@ -34,11 +68,11 @@ void main() {
     ));
 
     // Ensure the form is visible
-    await tester.ensureVisible(find.text('Sign In'));
+    await tester.ensureVisible(find.text('Se connecter'));
     await tester.pump();
     
     // Find the sign in button and tap it
-    final signInButton = find.text('Sign In');
+    final signInButton = find.text('Se connecter');
     await tester.tap(signInButton);
     await tester.pumpAndSettle();
     
@@ -93,6 +127,50 @@ void main() {
     // Should be back to visibility_off icon
     expect(find.byIcon(Icons.visibility_off), findsOneWidget);
     expect(find.byIcon(Icons.visibility), findsNothing);
+  });
+
+  testWidgets('Remember me checkbox works', (WidgetTester tester) async {
+    await tester.pumpWidget(const MaterialApp(
+      home: Scaffold(
+        body: LoginScreen(),
+      ),
+    ));
+    
+    // Find the checkbox
+    final checkbox = find.byType(Checkbox);
+    await tester.ensureVisible(checkbox);
+    await tester.pump();
+    
+    // Initially unchecked
+    Checkbox checkboxWidget = tester.widget(checkbox);
+    expect(checkboxWidget.value, false);
+    
+    // Tap to check
+    await tester.tap(checkbox);
+    await tester.pump();
+    
+    // Now should be checked
+    checkboxWidget = tester.widget(checkbox);
+    expect(checkboxWidget.value, true);
+  });
+
+  testWidgets('OAuth buttons are present', (WidgetTester tester) async {
+    await tester.pumpWidget(const MaterialApp(
+      home: Scaffold(
+        body: LoginScreen(),
+      ),
+    ));
+    
+    // Ensure OAuth section is visible
+    await tester.ensureVisible(find.text('Se connecter avec Google'));
+    await tester.pump();
+    
+    // Verify OAuth buttons
+    expect(find.text('Se connecter avec Google'), findsOneWidget);
+    expect(find.text('Se connecter avec Microsoft'), findsOneWidget);
+    
+    // Verify divider text
+    expect(find.text('ou continuez avec vos comptes'), findsOneWidget);
   });
 
   testWidgets('Can enter email and password', (WidgetTester tester) async {
