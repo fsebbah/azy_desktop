@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -155,7 +154,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                       ),
-                      color: Colors.white.withOpacity(0.95),
+                      color: Colors.white.withValues(alpha: 0.95),
                       child: Padding(
                         padding: const EdgeInsets.all(40),
                         child: Form(
@@ -386,7 +385,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: Colors.purple.withOpacity(0.3),
+                color: Colors.purple.withValues(alpha: 0.3),
                 blurRadius: 20,
                 offset: const Offset(0, 10),
               ),
@@ -435,7 +434,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                 shape: BoxShape.circle,
                 gradient: RadialGradient(
                   colors: [
-                    Colors.purple.withOpacity(0.3 * value),
+                    Colors.purple.withValues(alpha: 0.3 * value),
                     Colors.transparent,
                   ],
                 ),
@@ -458,7 +457,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                 shape: BoxShape.circle,
                 gradient: RadialGradient(
                   colors: [
-                    Colors.blue.withOpacity(0.2 * value),
+                    Colors.blue.withValues(alpha: 0.2 * value),
                     Colors.transparent,
                   ],
                 ),
