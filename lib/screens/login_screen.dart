@@ -147,7 +147,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                 child: SlideTransition(
                   position: _slideAnimation,
                   child: Container(
-                    width: 450,
+                    constraints: const BoxConstraints(maxWidth: 450),
                     margin: const EdgeInsets.all(32),
                     child: Card(
                       elevation: 8,
@@ -336,8 +336,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                               const SizedBox(height: 20),
                               
                               // Sign up link
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                              Wrap(
+                                alignment: WrapAlignment.center,
                                 children: [
                                   Text(
                                     "Don't have an account? ",
@@ -347,6 +347,11 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                     onPressed: () {
                                       // TODO: Navigate to sign up
                                     },
+                                    style: TextButton.styleFrom(
+                                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                                      minimumSize: Size.zero,
+                                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                    ),
                                     child: const Text(
                                       'Sign Up',
                                       style: TextStyle(
